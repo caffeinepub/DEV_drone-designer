@@ -1,0 +1,287 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Drone Designer — Frontend MVP",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add responsive app shell with clear navigation between a landing page and a drone design workspace using client-side routing.",
+      "acceptanceCriteria": [
+        "App has at least two routes/pages: a landing page and a design workspace.",
+        "Navigation between pages is obvious on desktop and mobile.",
+        "No placeholder lorem-ipsum remains in user-facing text."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the root App component (imported by existing frontend/src/main.tsx) that wires client-side routing for Landing and Workspace views and renders a shared app shell (header + main content)."
+        },
+        {
+          "path": "frontend/src/routes.tsx",
+          "operation": "create",
+          "description": "Define route configuration and route components for the landing page and the design workspace; ensure routes are used by frontend/src/App.tsx."
+        },
+        {
+          "path": "frontend/src/components/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create a responsive header with primary navigation links (Landing, Workspace) and space for auth status/logo; ensure mobile-friendly layout and obvious navigation."
+        },
+        {
+          "path": "frontend/src/pages/Landing.tsx",
+          "operation": "create",
+          "description": "Implement the landing page content (product pitch + call-to-action to open the workspace) with real English copy (no lorem ipsum)."
+        },
+        {
+          "path": "frontend/src/pages/Workspace.tsx",
+          "operation": "create",
+          "description": "Implement the workspace page layout (editor left, 3D preview center/right, summary + My Designs panels) with responsive stacking for mobile."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement Internet Identity sign-in/out UI, signed-in state display, and gating of save/load features when signed out; prompt for a user profile name on first login.",
+      "acceptanceCriteria": [
+        "User can sign in/out with Internet Identity.",
+        "UI clearly indicates whether the user is signed in.",
+        "Saving/loading designs is disabled (with a helpful message) when signed out."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a Login/Logout button that composes the existing immutable hook frontend/src/hooks/useInternetIdentity.ts and clears React Query cache on logout. Use shadcn-ui components for button styling where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/auth/useCurrentUser.ts",
+          "operation": "create",
+          "description": "Add React Query hooks that use frontend/src/hooks/useActor.ts to fetch current user role and user profile (getCallerUserRole, getCallerUserProfile) and expose consolidated signed-in state for UI."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a modal dialog prompting for a display name the first time a principal logs in (when getCallerUserProfile returns null); save via saveCallerUserProfile. Use shadcn-ui Dialog/Form components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/SignedInBadge.tsx",
+          "operation": "create",
+          "description": "Show signed-in state in the header (e.g., show profile name when available, otherwise a neutral 'Signed in' label) without displaying the raw principal id. Use shadcn-ui Badge/Avatar primitives if available. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Wire LoginButton, SignedInBadge, and ProfileSetupDialog into the shared header so auth state is visible and profile setup is triggered after successful login. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/designs/authGating.ts",
+          "operation": "create",
+          "description": "Centralize helper logic for gating persistence actions (save/load/list/rename/delete) behind authentication, returning user-friendly messages when signed out."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Build a drone design editor with configurable component categories and immediate state updates.",
+      "acceptanceCriteria": [
+        "Workspace includes a component list and an editor UI to change component selections/parameters.",
+        "User can add/remove or change at least the minimum component categories listed.",
+        "The current design state updates immediately in the UI when edits are made."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/designer/types.ts",
+          "operation": "create",
+          "description": "Define TypeScript types for the drone design configuration (frame, motors, props, battery, flight controller, camera/payload) and key adjustable parameters (quantity, KV, prop size, cell count, etc.)."
+        },
+        {
+          "path": "frontend/src/features/designer/defaults.ts",
+          "operation": "create",
+          "description": "Provide sensible default configuration values and option lists for the editor (common frame types/sizes, motor KV ranges, prop sizes, battery capacities/cell counts, etc.)."
+        },
+        {
+          "path": "frontend/src/features/designer/DesignStore.tsx",
+          "operation": "create",
+          "description": "Create a React context/provider to hold the current design state, expose update actions, and support replacing the entire design when loading a saved design."
+        },
+        {
+          "path": "frontend/src/components/designer/ComponentEditorPanel.tsx",
+          "operation": "create",
+          "description": "Implement the editor UI (component list + controls) for minimum categories: frame, motor, propeller, battery, flight controller, camera/optional payload. Use shadcn-ui Accordion/Tabs/Select/Input components for a tool-like editor. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Workspace.tsx",
+          "operation": "modify",
+          "description": "Wire DesignStore provider and render the ComponentEditorPanel in the workspace layout so edits update the shared design state immediately."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Render a live 3D game preview (3D game) of the configured drone using React Three Fiber with orbit controls and visual differentiation of major parts.",
+      "acceptanceCriteria": [
+        "3D preview renders in the workspace without errors.",
+        "User can rotate/zoom the view via orbit controls.",
+        "Changing components in the editor visibly changes the 3D preview (at least for frame size/type and prop size)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/package.json",
+          "operation": "modify",
+          "description": "Add/verify required dependencies for Three.js rendering: three, @react-three/fiber, and @react-three/drei (for orbit controls) so the 3D preview can be implemented."
+        },
+        {
+          "path": "frontend/src/components/preview3d/DronePreviewCanvas.tsx",
+          "operation": "create",
+          "description": "Create a React Three Fiber Canvas wrapper with lighting and OrbitControls for rotating/zooming. Ensure it reads the current design from DesignStore."
+        },
+        {
+          "path": "frontend/src/components/preview3d/DroneModel.tsx",
+          "operation": "create",
+          "description": "Render a simplified parametric 3D representation of the drone with distinct materials/colors for frame, motors, props, battery, and camera/payload; map frame size/type and prop size to visible geometry changes."
+        },
+        {
+          "path": "frontend/src/pages/Workspace.tsx",
+          "operation": "modify",
+          "description": "Place the DronePreviewCanvas into the workspace layout and ensure it re-renders as design state changes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Compute and display a transparent design summary (weight, thrust, thrust-to-weight, flight time range) that updates as the design changes.",
+      "acceptanceCriteria": [
+        "Summary panel shows the required metrics.",
+        "Assumptions/inputs used for calculations are visible (e.g., per-motor thrust estimate, battery capacity, efficiency factor).",
+        "Metrics update when relevant component parameters change."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/summary/assumptions.ts",
+          "operation": "create",
+          "description": "Define user-visible default assumptions/constants used in calculations (e.g., estimated thrust per motor vs prop size/KV band, efficiency factor, average current draw heuristic)."
+        },
+        {
+          "path": "frontend/src/features/summary/calc.ts",
+          "operation": "create",
+          "description": "Implement pure functions that take the current design configuration and assumptions and return estimated all-up weight, total thrust, thrust-to-weight ratio, and flight time range."
+        },
+        {
+          "path": "frontend/src/components/summary/DesignSummaryPanel.tsx",
+          "operation": "create",
+          "description": "Render a summary panel with the required metrics plus a clearly labeled section listing the assumptions/inputs used. Use shadcn-ui Card/Table components for readable layout. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Workspace.tsx",
+          "operation": "modify",
+          "description": "Wire the DesignSummaryPanel into the workspace and ensure it updates immediately when design parameters change."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add a “My Designs” panel that uses React Query to save, list, load, rename, and delete designs via the backend actor, with loading/error states.",
+      "acceptanceCriteria": [
+        "User can save the current design with a name.",
+        "Saved designs list shows at least name and last updated time.",
+        "User can load a saved design and see the editor + 3D preview update accordingly.",
+        "User can rename and delete a saved design.",
+        "UI shows loading and error states for all backend actions."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/designs/serialization.ts",
+          "operation": "create",
+          "description": "Implement serialization/deserialization between in-memory design config and the backend's designData string payload; include versioning metadata to support future changes."
+        },
+        {
+          "path": "frontend/src/features/designs/queries.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for listDesigns, getDesign, saveDesign, and deleteDesign using frontend/src/hooks/useActor.ts; include consistent error handling for authorization failures and network errors."
+        },
+        {
+          "path": "frontend/src/components/designs/MyDesignsPanel.tsx",
+          "operation": "create",
+          "description": "Implement the My Designs panel UI: save current design with a name, list designs with last updated time, load into editor, rename (implemented as save under new name + delete old name if needed), and delete. Use shadcn-ui Dialog/AlertDialog/Input/Button components and show loading/error states for all actions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Workspace.tsx",
+          "operation": "modify",
+          "description": "Wire MyDesignsPanel into the workspace and connect load action to replace the current DesignStore state so both editor and 3D preview update."
+        },
+        {
+          "path": "frontend/src/features/designs/authGating.ts",
+          "operation": "modify",
+          "description": "Use auth gating to disable save/load/list/rename/delete when signed out and provide a helpful in-panel message instructing the user to sign in."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply a consistent, tool-like visual theme across landing and workspace (non-blue/purple primary palette).",
+      "acceptanceCriteria": [
+        "Landing page and workspace share a consistent visual system (type scale, spacing, buttons, panels).",
+        "Theme avoids default/unstyled appearance; UI looks intentional and tool-like.",
+        "Theme does not rely on blue/purple as the primary palette."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create the global stylesheet imported by frontend/src/main.tsx and define the design tokens (CSS variables) to establish a cohesive theme (e.g., dark neutral workspace + warm accent such as orange/amber/green) avoiding blue/purple as primary."
+        },
+        {
+          "path": "frontend/src/components/AppShell.tsx",
+          "operation": "create",
+          "description": "Create a reusable app shell layout component that standardizes spacing, panels, and typography across pages; use it in App routing layout."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap routed pages in the AppShell and ensure the theme (including dark mode class if used) is applied consistently across landing and workspace."
+        },
+        {
+          "path": "frontend/src/pages/Landing.tsx",
+          "operation": "modify",
+          "description": "Align landing page layout and components to the shared theme (typography scale, spacing rhythm, buttons/panels) so it matches the workspace look and feel."
+        },
+        {
+          "path": "frontend/src/pages/Workspace.tsx",
+          "operation": "modify",
+          "description": "Ensure workspace panels (editor, 3D preview, summary, My Designs) use consistent themed containers and spacing (compose shadcn-ui Card/Separator/etc., without modifying frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add generated hero and logo images as static frontend assets and display them on the landing page and in the app header.",
+      "acceptanceCriteria": [
+        "Generated images are placed under frontend/public/assets/generated and referenced from the UI.",
+        "Landing page includes the hero image.",
+        "App includes a logo mark in the header or equivalent app chrome."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/drone-hero.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated hero image asset at frontend/public/assets/generated/drone-hero.dim_1600x900.png for static usage (no backend involvement)."
+        },
+        {
+          "path": "frontend/public/assets/generated/drone-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated logo mark asset at frontend/public/assets/generated/drone-logo.dim_512x512.png for static usage (no backend involvement)."
+        },
+        {
+          "path": "frontend/src/pages/Landing.tsx",
+          "operation": "modify",
+          "description": "Reference and render the hero image from frontend/public/assets/generated/drone-hero.dim_1600x900.png in the landing page hero section."
+        },
+        {
+          "path": "frontend/src/components/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Reference and render the logo mark from frontend/public/assets/generated/drone-logo.dim_512x512.png in the header/app chrome alongside navigation."
+        }
+      ]
+    }
+  ]
+}

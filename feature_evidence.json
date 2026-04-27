@@ -1,0 +1,183 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-responsive-single-page-website-for-designing-drones-with-clear-navigation-between-a-landing-page-and-a-drone-design-workspace",
+      "featureTitle": "Create a responsive single-page website for designing drones, with clear navigation between a landing page and a drone design workspace.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/pages/Landing.tsx",
+        "frontend/src/pages/Workspace.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-internet-identity-sign-in-and-show-signed-in-state-in-the-ui-so-users-can-save-and-load-their-drone-designs-under-their-identity",
+      "featureTitle": "Implement Internet Identity sign-in and show signed-in state in the UI so users can save and load their drone designs under their identity.",
+      "files": [
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/components/auth/SignedInBadge.tsx",
+        "frontend/src/features/auth/useCurrentUser.ts",
+        "frontend/src/features/designs/authGating.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-a-drone-design-editor-that-lets-users-configure-a-drone-by-selecting-common-components-at-minimum-frame-size-type-motor-propeller-battery-flight-controller-camera-optional-payload-and-adjusting-key-parameters-e-g-quantity-kv-prop-size-battery-cell-count",
+      "featureTitle": "Provide a drone design editor that lets users configure a drone by selecting common components (at minimum: frame size/type, motor, propeller, battery, flight controller, camera/optional payload) and adjusting key parameters (e.g., quantity, KV, prop size, battery cell count).",
+      "files": [
+        "frontend/src/components/designer/ComponentEditorPanel.tsx",
+        "frontend/src/features/designer/DesignStore.tsx",
+        "frontend/src/features/designer/defaults.ts",
+        "frontend/src/features/designer/types.ts",
+        "frontend/src/pages/Workspace.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-render-a-live-3d-preview-of-the-configured-drone-in-the-workspace-using-three-js-react-three-fiber-with-basic-orbit-controls-and-clear-visual-differentiation-between-major-parts-frame-motors-props-battery-camera-payload",
+      "featureTitle": "Render a live 3D preview of the configured drone in the workspace using Three.js / React Three Fiber, with basic orbit controls and clear visual differentiation between major parts (frame, motors, props, battery, camera/payload).",
+      "files": [
+        "frontend/src/components/preview3d/DroneModel.tsx",
+        "frontend/src/components/preview3d/DronePreviewCanvas.tsx",
+        "frontend/src/pages/Workspace.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-calculate-and-display-a-simple-design-summary-for-the-current-configuration-at-minimum-estimated-all-up-weight-estimated-total-thrust-thrust-to-weight-ratio-and-an-estimated-flight-time-range-using-transparent-user-visible-assumptions",
+      "featureTitle": "Calculate and display a simple design summary for the current configuration (at minimum: estimated all-up weight, estimated total thrust, thrust-to-weight ratio, and an estimated flight time range) using transparent, user-visible assumptions.",
+      "files": [
+        "frontend/src/components/summary/DesignSummaryPanel.tsx",
+        "frontend/src/features/summary/assumptions.ts",
+        "frontend/src/features/summary/calc.ts",
+        "frontend/src/pages/Workspace.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-my-designs-panel-in-the-ui-that-integrates-with-the-backend-via-react-query-to-save-the-current-design-view-saved-designs-load-a-design-into-the-editor-rename-it-and-delete-it",
+      "featureTitle": "Add a “My Designs” panel in the UI that integrates with the backend (via React Query) to save the current design, view saved designs, load a design into the editor, rename it, and delete it.",
+      "files": [
+        "frontend/src/components/designs/MyDesignsPanel.tsx",
+        "frontend/src/features/designs/authGating.ts",
+        "frontend/src/features/designs/queries.ts",
+        "frontend/src/features/designs/serialization.ts",
+        "frontend/src/pages/Workspace.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-a-coherent-visual-theme-for-the-app-colors-typography-spacing-and-component-styling-appropriate-for-a-drone-design-tool-and-apply-it-consistently-across-all-pages",
+      "featureTitle": "Provide a coherent visual theme for the app (colors, typography, spacing, and component styling) appropriate for a drone design tool and apply it consistently across all pages.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppShell.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/Landing.tsx",
+        "frontend/src/pages/Workspace.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-static-generated-brand-hero-imagery-and-use-it-on-the-landing-page-and-in-the-app-shell-e-g-header-without-serving-images-through-the-backend",
+      "featureTitle": "Add static generated brand/hero imagery and use it on the landing page and in the app shell (e.g., header) without serving images through the backend.",
+      "files": [
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/pages/Landing.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

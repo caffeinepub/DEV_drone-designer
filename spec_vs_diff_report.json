@@ -1,0 +1,90 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-18T06:29:01.390Z",
+  "summary": "The diff implements core frontend routing (landing + workspace), an in-memory design store, a component editor, a Three.js/R3F 3D preview with orbit controls, performance calculations with visible assumptions, and a “My Designs” panel wired via React Query to backend methods. However, backend persistence does not meet the CRUD + record-shape requirements (no id/createdAt/updatedAt, no update/rename), and the frontend “My Designs” panel does not show rename/update support in the provided diff. Landing/hero image usage cannot be verified from the provided file excerpts.",
+  "missing_requirements": [
+    {
+      "id": "REQ-6",
+      "requirement": "Backend persistence must support create, list, get/load, update, and delete designs per authenticated user, and design records must include id, name, configuration payload, createdAt, updatedAt.",
+      "reason": "Backend exposes saveDesign/listDesigns/getDesign/deleteDesign but no update method; it stores designs keyed by name and the record only contains name, designData, and a single timestamp (no id, createdAt, updatedAt).",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "“My Designs” panel must allow renaming an existing design and updating it (in addition to save, list, load, delete), with loading/error states for all backend actions.",
+      "reason": "The provided frontend query hooks only implement list/get/save/delete; no rename/update mutation is present in the diff. The visible portion of the panel shows save/load/delete flows, but no rename/update action is evidenced.",
+      "evidence": [
+        "frontend/src/features/designs/queries.ts",
+        "frontend/src/components/designs/MyDesignsPanel.tsx"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Landing page must include the generated hero image, and generated images must be placed under frontend/public/assets/generated and referenced from the UI (including hero).",
+      "reason": "The header references the logo under /assets/generated, but the diff excerpt does not include the Landing page implementation or any evidence of the hero image being referenced/used. (Landing/Workspace page files are not included in the provided excerpts.)",
+      "evidence": [
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile management (get/save caller user profile) and a forced profile setup dialog prompting for the user's name.",
+      "reason": "The BuildRequest focuses on saving/loading drone designs under Internet Identity, but does not request user profile storage or a required onboarding/name prompt.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/features/auth/useCurrentUser.ts",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/components/auth/SignedInBadge.tsx"
+      ]
+    },
+    {
+      "description": "Custom authorization/access-control system with roles/permissions and admin checks.",
+      "reason": "The BuildRequest requires per-principal isolation for designs, but does not request introducing an authorization framework, roles, or admin capabilities.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppHeader.tsx",
+    "frontend/src/components/AppShell.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/auth/SignedInBadge.tsx",
+    "frontend/src/components/designer/ComponentEditorPanel.tsx",
+    "frontend/src/components/designs/MyDesignsPanel.tsx",
+    "frontend/src/components/preview3d/DroneModel.tsx",
+    "frontend/src/components/preview3d/DronePreviewCanvas.tsx",
+    "frontend/src/components/summary/DesignSummaryPanel.tsx",
+    "frontend/src/features/auth/useCurrentUser.ts",
+    "frontend/src/features/designer/DesignStore.tsx",
+    "frontend/src/features/designer/defaults.ts",
+    "frontend/src/features/designer/types.ts",
+    "frontend/src/features/designs/authGating.ts",
+    "frontend/src/features/designs/queries.ts",
+    "frontend/src/features/designs/serialization.ts",
+    "frontend/src/features/summary/assumptions.ts",
+    "frontend/src/features/summary/calc.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/Landing.tsx",
+    "frontend/src/pages/Workspace.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

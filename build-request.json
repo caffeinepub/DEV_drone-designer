@@ -1,0 +1,190 @@
+{
+  "kind": "build_request",
+  "title": "Drone design website MVP",
+  "projectName": "Drone Designer",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a responsive single-page website for designing drones, with clear navigation between a landing page and a drone design workspace.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has at least two routes/pages: a landing page and a design workspace.",
+        "Navigation between pages is obvious on desktop and mobile.",
+        "No placeholder lorem-ipsum remains in user-facing text."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement Internet Identity sign-in and show signed-in state in the UI so users can save and load their drone designs under their identity.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in/out with Internet Identity.",
+        "UI clearly indicates whether the user is signed in.",
+        "Saving/loading designs is disabled (with a helpful message) when signed out."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Provide a drone design editor that lets users configure a drone by selecting common components (at minimum: frame size/type, motor, propeller, battery, flight controller, camera/optional payload) and adjusting key parameters (e.g., quantity, KV, prop size, battery cell count).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Workspace includes a component list and an editor UI to change component selections/parameters.",
+        "User can add/remove or change at least the minimum component categories listed.",
+        "The current design state updates immediately in the UI when edits are made."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Render a live 3D preview of the configured drone in the workspace using Three.js / React Three Fiber, with basic orbit controls and clear visual differentiation between major parts (frame, motors, props, battery, camera/payload).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "3D preview renders in the workspace without errors.",
+        "User can rotate/zoom the view via orbit controls.",
+        "Changing components in the editor visibly changes the 3D preview (at least for frame size/type and prop size)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Calculate and display a simple design summary for the current configuration (at minimum: estimated all-up weight, estimated total thrust, thrust-to-weight ratio, and an estimated flight time range) using transparent, user-visible assumptions.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Summary panel shows the required metrics.",
+        "Assumptions/inputs used for calculations are visible (e.g., per-motor thrust estimate, battery capacity, efficiency factor).",
+        "Metrics update when relevant component parameters change."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement backend persistence for drone designs: create, list, load, update, and delete designs per authenticated user, including timestamps and a user-provided name for each design.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes methods to create, list, get, update, and delete designs for the calling principal.",
+        "Design records include: id, name, configuration payload, createdAt, updatedAt.",
+        "A user can only access their own saved designs."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add a “My Designs” panel in the UI that integrates with the backend (via React Query) to save the current design, view saved designs, load a design into the editor, rename it, and delete it.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can save the current design with a name.",
+        "Saved designs list shows at least name and last updated time.",
+        "User can load a saved design and see the editor + 3D preview update accordingly.",
+        "User can rename and delete a saved design.",
+        "UI shows loading and error states for all backend actions."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Provide a coherent visual theme for the app (colors, typography, spacing, and component styling) appropriate for a drone design tool and apply it consistently across all pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Landing page and workspace share a consistent visual system (type scale, spacing, buttons, panels).",
+        "Theme avoids default/unstyled appearance; UI looks intentional and tool-like.",
+        "Theme does not rely on blue/purple as the primary palette."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add static generated brand/hero imagery and use it on the landing page and in the app shell (e.g., header) without serving images through the backend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I'd like a website for designing drones."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are placed under frontend/public/assets/generated and referenced from the UI.",
+        "Landing page includes the hero image.",
+        "App includes a logo mark in the header or equivalent app chrome."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor with all logic in the main actor file; only add migration code if an upgrade requires it.",
+    "Do not edit frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui (compose these instead).",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "Real-time collaboration/multiplayer design editing.",
+    "Exporting CAD/STL/STEP files or integrating with external CAD tools.",
+    "Integrations with external drone part marketplaces or third-party APIs.",
+    "Advanced physics simulation, PID tuning, or firmware flashing workflows."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Modern geometric drone wireframe hero illustration on a dark neutral background (drone-hero.dim_1600x900.png)",
+      "Minimal monoline drone logo mark (drone-logo.dim_512x512.png)"
+    ],
+    "edits": []
+  }
+}
